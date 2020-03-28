@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../node_modules/@react-native-firebase/app/android/@react-native-firebase_app.iml" filepath="$PROJECT_DIR$/../node_modules/@react-native-firebase/app/android/@react-native-firebase_app.iml" group="TrashemonGo/@react-native-firebase_app" />
+      <module fileurl="file://$PROJECT_DIR$/../node_modules/@react-native-firebase/ml-vision/android/@react-native-firebase_ml-vision.iml" filepath="$PROJECT_DIR$/../node_modules/@react-native-firebase/ml-vision/android/@react-native-firebase_ml-vision.iml" group="TrashemonGo/@react-native-firebase_ml-vision" />
+      <module fileurl="file://$PROJECT_DIR$/TrashemonGo.iml" filepath="$PROJECT_DIR$/TrashemonGo.iml" group="TrashemonGo" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="TrashemonGo/app" />
+    </modules>
+  </component>
+</project>

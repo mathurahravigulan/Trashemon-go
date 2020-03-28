@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "590022303317",
+    "firebase_url": "https://trashemongo.firebaseio.com",
+    "project_id": "trashemongo",
+    "storage_bucket": "trashemongo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:590022303317:android:5670e4e0ea214a331b3edc",
+        "android_client_info": {
+          "package_name": "com.trashemongo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "590022303317-85gcg6b1d556j13u0vjpfa35d179n515.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDtxtYH3THBcFhm7Lg1i7dm7Cc2OEu2no"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "590022303317-85gcg6b1d556j13u0vjpfa35d179n515.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "590022303317-a213up4f2huihse9bhd3idih4g6vovv0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.trashemongo"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

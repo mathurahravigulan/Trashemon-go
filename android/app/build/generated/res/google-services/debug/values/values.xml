@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">590022303317-85gcg6b1d556j13u0vjpfa35d179n515.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://trashemongo.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">590022303317</string>
+    <string name="google_api_key" translatable="false">AIzaSyCDtxtYH3THBcFhm7Lg1i7dm7Cc2OEu2no</string>
+    <string name="google_app_id" translatable="false">1:590022303317:android:5670e4e0ea214a331b3edc</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCDtxtYH3THBcFhm7Lg1i7dm7Cc2OEu2no</string>
+    <string name="google_storage_bucket" translatable="false">trashemongo.appspot.com</string>
+    <string name="project_id" translatable="false">trashemongo</string>
+</resources>

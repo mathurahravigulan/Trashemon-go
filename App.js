@@ -9,8 +9,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import vision from '@react-native-firebase/ml-vision';
-import { firebase } from '@react-native-firebase/ml-vision';
-
 import firebase from '@react-native-firebase/app';
 
 // TODO(you): import any additional firebase services that you require for your app, e.g for auth:
@@ -36,7 +34,7 @@ export default class App extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native + Firebase!</Text>
+        <Text style={styles.welcome}>TRASHEMON GO!</Text>
         <Text style={styles.instructions}>To get started, edit App.js</Text>
         <Text style={styles.instructions}>{instructions}</Text>
         {!firebase.apps.length && (
