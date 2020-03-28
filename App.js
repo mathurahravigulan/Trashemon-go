@@ -8,6 +8,8 @@
 
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
+import vision from '@react-native-firebase/ml-vision';
+import { firebase } from '@react-native-firebase/ml-vision';
 
 import firebase from '@react-native-firebase/app';
 
