@@ -10,6 +10,38 @@ import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import vision from '@react-native-firebase/ml-vision';
 import firebase from '@react-native-firebase/app';
+require('dotenv').config();
+
+// Node/Express
+const express = require('express');
+const http = require('http');
+const path = require('path');
+const bodyParser = require('body-parser');
+
+const router = require('./src/router');
+const syncServiceDetails = require('./src/sync_service_details');
+
+// Create Express webapp
+const app = express();
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Add body parser for Notify device registration
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+
+app.use(router);
+
+// Get Sync Service Details for lazy creation of default service if needed
+syncServiceDetails();
+
+// Create http server and run it
+const server = http.createServer(app);
+const port = process.env.PORT || 3000;
+server.listen(port, function() {
+  console.log('Express server running on *:' + port);
+});
+
+module.exports = app;
 
 // TODO(you): import any additional firebase services that you require for your app, e.g for auth:
 //    1) install the npm package: `yarn add @react-native-firebase/auth@alpha` - you do not need to
@@ -65,3 +97,5 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 });
+
+
