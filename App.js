@@ -1,101 +1,202 @@
-/**
- * Sample React Native App with Firebase
- * https://github.com/invertase/react-native-firebase
- *
- * @format
- * @flow
- */
+import React from 'react';
+import {
+  ActivityIndicator,
+  Button,
+  Clipboard,
+  Image,
+  Share,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { Constants, ImagePicker, Permissions } from 'expo';
+import uuid from 'uuid';
+import Environment from "../config/environment";
+import firebase from "../utils/firebase";
 
-import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
-import vision from '@react-native-firebase/ml-vision';
-import firebase from '@react-native-firebase/app';
-require('dotenv').config();
+firebase.initializeApp(firebaseConfig);
 
-// Node/Express
-const express = require('express');
-const http = require('http');
-const path = require('path');
-const bodyParser = require('body-parser');
+export default class App extends React.Component {
+  state = {
+    image: null,
+    googleResponse: null,
+    uploading: false,
+  };
 
-const router = require('./src/router');
-const syncServiceDetails = require('./src/sync_service_details');
+  
+  
+  async componentDidMount() {
+    await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    await Permissions.askAsync(Permissions.CAMERA);
+  }
 
-// Create Express webapp
-const app = express();
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Add body parser for Notify device registration
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
-
-app.use(router);
-
-// Get Sync Service Details for lazy creation of default service if needed
-syncServiceDetails();
-
-// Create http server and run it
-const server = http.createServer(app);
-const port = process.env.PORT || 3000;
-server.listen(port, function() {
-  console.log('Express server running on *:' + port);
-});
-
-module.exports = app;
-
-// TODO(you): import any additional firebase services that you require for your app, e.g for auth:
-//    1) install the npm package: `yarn add @react-native-firebase/auth@alpha` - you do not need to
-//       run linking commands - this happens automatically at build time now
-//    2) rebuild your app via `yarn run run:android` or `yarn run run:ios`
-//    3) import the package here in your JavaScript code: `import '@react-native-firebase/auth';`
-//    4) The Firebase Auth service is now available to use here: `firebase.auth().currentUser`
-
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\nCmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\nShake or press menu button for dev menu',
-});
-
-const firebaseCredentials = Platform.select({
-  ios: 'https://invertase.link/firebase-ios',
-  android: 'https://invertase.link/firebase-android',
-});
-
-type Props = {};
-
-export default class App extends Component<Props> {
   render() {
+    let { image } = this.state;
+
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>TRASHEMON GO!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-        {!firebase.apps.length && (
-          <Text style={styles.instructions}>
-            {`\nYou currently have no Firebase apps registered, this most likely means you've not downloaded your project credentials. Visit the link below to learn more. \n\n ${firebaseCredentials}`}
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        {image ? null : (
+          <Text
+            style={{
+              fontSize: 20,
+              marginBottom: 20,
+              textAlign: 'center',
+              marginHorizontal: 15,
+            }}>
+            Example: Upload ImagePicker result
           </Text>
         )}
+
+        <Button
+          onPress={this._pickImage}
+          title="Pick an image from camera roll"
+        />
+
+        <Button onPress={this._takePhoto} title="Take a photo" />
+
+        {this._maybeRenderImage()}
+        {this._maybeRenderUploadingOverlay()}
+
+        <StatusBar barStyle="default" />
       </View>
     );
   }
+
+  _maybeRenderUploadingOverlay = () => {
+    if (this.state.uploading) {
+      return (
+        <View
+          style={[
+            StyleSheet.absoluteFill,
+            {
+              backgroundColor: 'rgba(0,0,0,0.4)',
+              alignItems: 'center',
+              justifyContent: 'center',
+            },
+          ]}>
+          <ActivityIndicator color="#fff" animating size="large" />
+        </View>
+      );
+    }
+  };
+
+  _maybeRenderImage = () => {
+    let { image } = this.state;
+    if (!image) {
+      return;
+    }
+
+    return (
+      <View
+        style={{
+          marginTop: 30,
+          width: 250,
+          borderRadius: 3,
+          elevation: 2,
+        }}>
+        <View
+          style={{
+            borderTopRightRadius: 3,
+            borderTopLeftRadius: 3,
+            shadowColor: 'rgba(0,0,0,1)',
+            shadowOpacity: 0.2,
+            shadowOffset: { width: 4, height: 4 },
+            shadowRadius: 5,
+            overflow: 'hidden',
+          }}>
+          <Image source={{ uri: image }} style={{ width: 250, height: 250 }} />
+        </View>
+
+        <Text
+          onPress={this._copyToClipboard}
+          onLongPress={this._share}
+          style={{ paddingVertical: 10, paddingHorizontal: 10 }}>
+          {image}
+        </Text>
+      </View>
+    );
+  };
+
+  _share = () => {
+    Share.share({
+      message: this.state.image,
+      title: 'Check out this photo',
+      url: this.state.image,
+    });
+  };
+
+  _copyToClipboard = () => {
+    Clipboard.setString(this.state.image);
+    alert('Copied image URL to clipboard');
+  };
+
+  _takePhoto = async () => {
+    let pickerResult = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+
+    this._handleImagePicked(pickerResult);
+  };
+
+  _pickImage = async () => {
+    let pickerResult = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+
+    this._handleImagePicked(pickerResult);
+  };
+
+  _handleImagePicked = async pickerResult => {
+    try {
+      this.setState({ uploading: true });
+
+      if (!pickerResult.cancelled) {
+        uploadUrl = await uploadImageAsync(pickerResult.uri);
+        this.setState({ image: uploadUrl });
+      }
+    } catch (e) {
+      console.log(e);
+      alert('Upload failed, sorry :(');
+    } finally {
+      this.setState({ uploading: false });
+    }
+  };
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+async function uploadImageAsync(uri) {
+  // Why are we using XMLHttpRequest? See:
+  // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+  const blob = await new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+      resolve(xhr.response);
+    };
+    xhr.onerror = function(e) {
+      console.log(e);
+      reject(new TypeError('Network request failed'));
+    };
+    xhr.responseType = 'blob';
+    xhr.open('GET', uri, true);
+    xhr.send(null);
+  });
 
+  const ref = firebase
+    .storage()
+    .ref()
+    .child(uuid.v4());
+  const snapshot = await ref.put(blob);
 
+  // We're done with the blob, close and release it
+  blob.close();
+
+  return await snapshot.ref.getDownloadURL();
+}
+
+<Button
+  onPress={() => this.submitToGoogle()}
+  title="Analyze!"
+ />
