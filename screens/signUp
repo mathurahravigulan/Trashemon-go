@@ -1,0 +1,175 @@
+import React from "react";
+import {
+  View,
+  TouchableOpacity,
+  TextInput,
+  Text,
+  StyleSheet
+} from "react-native";
+import RNPickerSelect from "react-native-picker-select";
+export default class SignUp extends React.Component {
+  state = {
+    username: "",
+    password: "",
+    email: "",
+    phone_number: ""
+  };
+  onChangeText = (key, val) => {
+    this.setState({ [key]: val });
+  };
+  signUp = async () => {
+    const { username, password, email, phone_number } = this.state;
+    try {
+      // here place your signup logic
+      console.log("user successfully signed up!: ", success);
+    } catch (err) {
+      console.log("error signing up: ", err);
+    }
+  };
+
+  render() {
+    let data = [
+      {
+        value: "Canada"
+      },
+      {
+        value: "United States"
+      },
+      {
+        value: "Mexico"
+      }
+    ];
+
+    return (
+      <View>
+        <View
+          style={{
+            backgroundColor: "#c7efa1",
+            height: "42%",
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <View style={{ padding: 20 }}>
+            <Text style={{ color: "white", fontSize: 35, fontWeight: 600 }}>
+              It's time that we clean up our Earth.
+            </Text>
+          </View>
+        </View>
+        <View style={{ flex: 1, flexDirection: "row" }}>
+          <View
+            style={{ backgroundColor: "#318a74", width: "50%", height: "54%" }}
+          />
+          <View
+            style={{ backgroundColor: "#307b4c", width: "50%", height: "54%" }}
+          />
+        </View>
+
+        <View
+          style={{ backgroundColor: "white", height: "28%", marginBottom: 10 }}
+        />
+        <View style={styles.container}>
+          <TextInput
+            style={styles.input}
+            placeholder="Username"
+            autoCapitalize="none"
+            placeholderTextColor="#555555"
+            onChangeText={val => this.onChangeText("username", val)}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            secureTextEntry={true}
+            autoCapitalize="none"
+            placeholderTextColor="#555555"
+            onChangeText={val => this.onChangeText("password", val)}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            autoCapitalize="none"
+            placeholderTextColor="#555555"
+            onChangeText={val => this.onChangeText("email", val)}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Phone Number"
+            autoCapitalize="none"
+            placeholderTextColor="#555555"
+            onChangeText={val => this.onChangeText("phone_number", val)}
+          />
+          <View style={styles.picker}>
+            <RNPickerSelect
+              placeholder={{ label: "Region", value: null }}
+              style={{
+                ...styles.picker,
+                inputAndroid: {
+                  borderRadius: 8,
+                  height: 40,
+                  backgroundColor: "#EEEEEE",
+                  marginTop: 10
+                },
+                iconContainer: {
+                  top: 5,
+                  right: 15
+                }
+              }}
+              onValueChange={value => console.log(value)}
+              items={[
+                { label: "Canada", value: "canada", color: "black" },
+                { label: "United States", value: "us", color: "black" },
+                { label: "Mexico", value: "mexico", color: "black" }
+              ]}
+            />
+          </View>
+
+          <TouchableOpacity style={styles.loginBtn}>
+            <Text style={{ color: "white", fontSize: 18 }}>Create Account</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  input: {
+    width: "70%",
+    height: 40,
+    backgroundColor: "#f7f5f8",
+    margin: 10,
+    padding: 8,
+    color: "black",
+    borderRadius: 8,
+    fontSize: 18,
+    fontWeight: "500"
+  },
+  picker: {
+    width: "70%",
+    height: 40,
+    fontSize: 18,
+    paddingVertical: 0,
+    paddingHorizontal: 0,
+    borderRadius: 40,
+    color: "#EEEEEE",
+    paddingRight: 0 // to ensure the text is never behind the icon
+  },
+  container: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  loginBtn: {
+    fontSize: 18,
+    width: "70%",
+    backgroundColor: "#46b66c",
+    borderRadius: 18,
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 30,
+
+    marginBottom: 10
+  }
+});
