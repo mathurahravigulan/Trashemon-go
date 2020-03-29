@@ -13,6 +13,7 @@
   "dependencies": {
     "@react-native-firebase/app": "6.3.4",
     "@react-native-firebase/ml-vision": "^6.3.4",
+    "expo": "^36.0.2",
     "react": "16.9.0",
     "react-native": "0.61.5"
   },
